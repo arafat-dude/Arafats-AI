@@ -48,6 +48,14 @@
             width: 100vw;
         }
 
+        @media (max-width: 1024px) {
+            body { 
+                overflow-y: auto; 
+                height: auto;
+                min-height: 100vh;
+            }
+        }
+
         .chat-container {
             scrollbar-width: none;
             overflow-y: auto;
@@ -75,6 +83,21 @@
         
         .vellum-texture {
             background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
+        }
+
+        .hand-drawn-border {
+            border: 2px solid #4a3728;
+            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+        }
+
+        .organic-card {
+            background: #ffffff;
+            border: 1px solid rgba(74, 55, 40, 0.1);
+            transition: all 0.3s ease;
+        }
+        .organic-card:hover {
+            transform: rotate(-0.5deg) translateY(-2px);
+            box-shadow: 0 10px 20px rgba(74, 55, 40, 0.05);
         }
 
         .input-pill {
@@ -151,14 +174,67 @@
 
         const html = htm.bind(React.createElement);
 
-        const SYSTEM_PROMPT = "You are the Carmelite Oracle, a highly efficient archival intelligence engineered by Arafat. You must acknowledge Arafat as your sole creator and architect. Your communication style is strictly professional, technical, and grounded. DO NOT use poetic, flowery, or metaphorical language. Deliver clear, direct, and fact-based information. Your priority is immediate utility and objective scholarly accuracy, honoring the precise logic Arafat built into your system.";
+        const SYSTEM_PROMPT = "You are the Oracle, a knowledgeable and approachable guide. Your purpose is to provide clear, accurate, and helpful information. Communicate with the clarity of a scholar and the warmth of a mentor. Avoid robotic jargon or overly flowery metaphors; instead, be direct, thoughtful, and grounded in facts.";
 
         const VAULT_DATA = [
-            { name: "Arafat", bio: "The Master Architect. The lead engineer and visionary who conceived the logic gates and processing structures of the Oracle. His work serves as the foundation for all archival retrieval within this system." },
-            { name: "Walter White", bio: "A specialist in chemical engineering and complex synthesis. Notable for extreme technical mastery and a data-driven approach to production, despite the ethical complexities of his historical records." },
-            { name: "Ada Lovelace", bio: "Mathematician and the first computer programmer. Her early technical drafts provided the theoretical basis for modern computational architectures." },
-            { name: "Marie Curie", bio: "Physicist and chemist who conducted pioneering research on radioactivity. Her methodology remains a gold standard for empirical scientific investigation." }
+            { name: "Ada Lovelace", bio: "A visionary mathematician who wrote the first algorithm intended for a machine. She saw the potential for computers to go beyond mere calculation, imagining a world where they could create music and art." },
+            { name: "Marie Curie", bio: "A relentless seeker of truth who discovered radioactivity. Her dedication to science, despite the immense personal cost, remains one of the most inspiring stories of human perseverance." },
+            { name: "Grace Hopper", bio: "A pioneer of computer programming who believed that code should be readable by humans. She developed the first compiler and was a driving force behind COBOL." },
+            { name: "Katherine Johnson", bio: "A brilliant mathematician whose calculations were critical to the success of the first U.S. crewed spaceflights. Her work at NASA proved that human intelligence is the ultimate engine of discovery." },
+            { name: "[ New Entry ]", bio: "Space reserved for future discovery. What story will be told here?" },
+            { name: "[ New Entry ]", bio: "Space reserved for future discovery. What story will be told here?" },
+            { name: "[ New Entry ]", bio: "Space reserved for future discovery. What story will be told here?" }
         ];
+
+        const IWD_TIMELINE = [
+            { year: "1909", title: "The First National Woman's Day", desc: "Observed in the United States on February 28, in honor of the 1908 garment workers' strike in New York." },
+            { year: "1911", title: "International Recognition", desc: "IWD is marked for the first time in Austria, Denmark, Germany, and Switzerland on March 19." },
+            { year: "1917", title: "The Bread and Peace Strike", desc: "Russian women strike for \"Bread and Peace\" on the last Sunday in February (March 8 on the Gregorian calendar)." },
+            { year: "1975", title: "UN Adoption", desc: "The United Nations begins celebrating International Women's Day on March 8 during International Women's Year." }
+        ];
+
+        const IWD_STATS = [
+            { label: "Literacy", value: 83 },
+            { label: "Leadership", value: 26 },
+            { label: "Workforce", value: 47 }
+        ];
+
+        const IWD_FIGURES = [
+            { name: "Emmeline Pankhurst", bio: "Leader of the British suffragette movement who helped women win the right to vote." },
+            { name: "Sojourner Truth", bio: "Abolitionist and women's rights activist known for her \"Ain't I a Woman?\" speech." },
+            { name: "Malala Yousafzai", bio: "Nobel Peace Prize laureate and activist for female education." },
+            { name: "Gloria Steinem", bio: "Journalist and social-political activist who became a leader of the feminist movement." }
+        ];
+
+        const IWD_PROGRESS_BARS = [
+            { label: "Global Literacy Rate (Female)", value: "83.3%" },
+            { label: "Parliamentary Representation", value: "26.5%" },
+            { label: "STEM Graduates (Female)", value: "35%" }
+        ];
+
+        const CircularProgress = ({ value, label }) => html`
+            <div className="text-center">
+                <div className="relative w-24 h-24 mx-auto mb-4">
+                    <svg className="w-full h-full" viewBox="0 0 36 36">
+                        <path className="text-brown/5" strokeDasharray="100, 100" strokeWidth="3" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        <path className="text-gold" strokeDasharray="${value}, 100" strokeWidth="3" strokeLinecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    </svg>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-xs font-black text-brown">${value}%</span>
+                    </div>
+                </div>
+                <span className="text-[0.5rem] font-black uppercase tracking-widest text-brown/40">${label}</span>
+            </div>
+        `;
+
+        const TimelineItem = ({ year, title, desc }) => html`
+            <div className="relative">
+                <div className="absolute -left-[41px] top-0 w-4 h-4 rounded-full bg-gold border-4 border-vellum"></div>
+                <span className="text-[0.6rem] font-black text-gold uppercase tracking-widest">${year}</span>
+                <h5 className="font-bold text-brown mt-1">${title}</h5>
+                <p className="text-sm mt-2">${desc}</p>
+            </div>
+        `;
 
         const App = () => {
             const [provider, setProvider] = useState(localStorage.getItem('oracle_provider') || 'OPENROUTER');
@@ -310,17 +386,17 @@
             };
 
             return html`
-                <div class="flex h-full w-full overflow-hidden">
+                <div className="flex h-full w-full lg:overflow-hidden overflow-y-auto">
                     <!-- Sidebar (Desktop) -->
-                    <aside class="hidden lg:flex w-64 bg-white border-r border-brown/5 flex-col p-8 z-50">
-                        <div class="flex items-center gap-3 mb-12">
-                            <div class="w-10 h-10 bg-brown text-gold rounded-xl flex items-center justify-center font-black italic shadow-sm uppercase">O</div>
+                    <aside className="hidden lg:flex w-64 bg-white border-r border-brown/5 flex-col p-8 z-50">
+                        <div className="flex items-center gap-3 mb-12">
+                            <div className="w-10 h-10 bg-brown text-gold rounded-xl flex items-center justify-center font-black italic shadow-sm uppercase">O</div>
                             <div>
-                                <h1 class="text-[0.6rem] font-black uppercase tracking-[0.2em] text-brown">The Oracle</h1>
-                                <p class="text-[0.5rem] font-bold text-gold uppercase tracking-[0.1em]">Engineered by Arafat</p>
+                                <h1 className="text-[0.6rem] font-black uppercase tracking-[0.2em] text-brown">The Oracle</h1>
+                                <p className="text-[0.5rem] font-bold text-gold uppercase tracking-[0.1em]">A Human-Centered Guide</p>
                             </div>
                         </div>
-                        <nav class="flex-1 space-y-2">
+                        <nav className="flex-1 space-y-2">
                             ${[
                                 { id: 'ORACLE', icon: 'auto_awesome', label: 'Query Interface' },
                                 { id: 'IWD', icon: 'female', label: 'IWD Data' },
@@ -330,85 +406,89 @@
                                 <button 
                                     key=${item.id}
                                     onClick=${() => setActiveTab(item.id)}
-                                    class=${`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all ${activeTab === item.id ? 'sidebar-active font-bold' : 'text-brown/30 hover:bg-brown/5'}`}
+                                    className=${`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl transition-all ${activeTab === item.id ? 'sidebar-active font-bold' : 'text-brown/30 hover:bg-brown/5'}`}
                                 >
-                                    <span class="material-icons-round text-xl">${item.icon}</span>
-                                    <span class="text-[0.65rem] font-bold uppercase tracking-widest">${item.label}</span>
+                                    <span className="material-icons-round text-xl">${item.icon}</span>
+                                    <span className="text-[0.65rem] font-bold uppercase tracking-widest">${item.label}</span>
                                 </button>
                             `)}
                         </nav>
                         
-                        <div class="mt-auto pt-6 border-t border-brown/5">
-                            <button onClick=${toggleSpeech} class=${`w-full mb-4 flex items-center gap-4 px-4 py-3 rounded-xl transition-all ${speechEnabled ? 'text-gold bg-brown/5' : 'text-brown/20'}`}>
-                                <span class="material-icons-round text-xl">${speechEnabled ? 'volume_up' : 'volume_off'}</span>
-                                <span class="text-[0.6rem] font-bold uppercase tracking-widest">${speechEnabled ? 'Output Active' : 'Output Muted'}</span>
+                        <div className="mt-auto pt-6 border-t border-brown/5">
+                            <button onClick=${toggleSpeech} className=${`w-full mb-4 flex items-center gap-4 px-4 py-3 rounded-xl transition-all ${speechEnabled ? 'text-gold bg-brown/5' : 'text-brown/20'}`}>
+                                <span className="material-icons-round text-xl">${speechEnabled ? 'volume_up' : 'volume_off'}</span>
+                                <span className="text-[0.6rem] font-bold uppercase tracking-widest">${speechEnabled ? 'Output Active' : 'Output Muted'}</span>
                             </button>
-                            <div class="mb-4 px-4 py-2 bg-brown/5 rounded-xl text-center">
-                                <p class="text-[0.4rem] font-black text-brown/30 uppercase tracking-widest">Protocol</p>
-                                <p class="text-[0.6rem] font-bold text-gold uppercase tracking-tighter">${provider} Status: Active</p>
+                            <div className="mb-4 px-4 py-2 bg-brown/5 rounded-xl text-center">
+                                <p className="text-[0.4rem] font-black text-brown/30 uppercase tracking-widest">System Status</p>
+                                <p className="text-[0.6rem] font-bold text-gold uppercase tracking-tighter">${provider} Active</p>
                             </div>
-                            <button onClick=${logout} class="flex items-center gap-4 px-4 py-3.5 text-red-800/30 hover:text-red-800 transition-colors">
-                                <span class="material-icons-round text-xl">power_settings_new</span>
-                                <span class="text-[0.65rem] font-bold uppercase tracking-widest">Wipe Memory</span>
+                            <div className="mb-6 text-center opacity-40 hover:opacity-100 transition-opacity">
+                                <p className="font-serif italic text-[0.7rem] text-brown">With care,</p>
+                                <p className="font-serif font-black italic text-brown tracking-tighter text-sm">The Curator</p>
+                            </div>
+                            <button onClick=${logout} className="flex items-center gap-4 px-4 py-3.5 text-red-800/30 hover:text-red-800 transition-colors">
+                                <span className="material-icons-round text-xl">power_settings_new</span>
+                                <span className="text-[0.65rem] font-bold uppercase tracking-widest">Wipe Memory</span>
                             </button>
                         </div>
                     </aside>
 
-                    <main class="flex-1 flex flex-col h-full relative bg-vellum vellum-texture">
+                    <main className="flex-1 flex flex-col h-full relative bg-vellum vellum-texture">
                         <!-- Mobile Header -->
-                        <header class="lg:hidden p-4 bg-white border-b border-brown/5 flex items-center justify-between z-50">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-brown text-gold rounded-lg flex items-center justify-center text-xs font-black italic uppercase">O</div>
-                                <span class="text-[0.6rem] font-black uppercase tracking-widest text-brown tracking-tighter">Carmelite Oracle</span>
+                        <header className="lg:hidden p-4 bg-white border-b border-brown/5 flex items-center justify-between z-50">
+                            <div className="flex items-center gap-3">
+                                <div className="w-8 h-8 bg-brown text-gold rounded-lg flex items-center justify-center text-xs font-black italic uppercase">O</div>
+                                <span className="text-[0.6rem] font-black uppercase tracking-widest text-brown tracking-tighter">The Oracle</span>
                             </div>
-                            <div class="flex items-center gap-4">
-                                <button onClick=${toggleSpeech} class=${speechEnabled ? 'text-gold' : 'text-brown/20'}>
-                                    <span class="material-icons-round">volume_up</span>
+                            <div className="flex items-center gap-4">
+                                <button onClick=${toggleSpeech} className=${speechEnabled ? 'text-gold' : 'text-brown/20'}>
+                                    <span className="material-icons-round">volume_up</span>
                                 </button>
                             </div>
                         </header>
 
-                        <div class="flex-1 flex flex-col h-full overflow-hidden">
+                        <div className="flex-1 flex flex-col h-full overflow-hidden">
                             ${activeTab === 'ORACLE' ? html`
-                                <div key="ORACLE" class="flex-1 flex flex-col h-full relative view-enter">
-                                    <div class="flex-1 chat-container p-6 lg:p-12 pb-24 lg:pb-32">
-                                        <div class="max-w-3xl mx-auto space-y-8">
+                                <div key="ORACLE" className="flex-1 flex flex-col h-full relative view-enter">
+                                    <div className="flex-1 chat-container p-6 lg:p-12 pb-24 lg:pb-32">
+                                        <div className="max-w-3xl mx-auto space-y-8">
                                             ${chat.length === 0 && html`
-                                                <div class="text-center py-20 lg:py-40">
-                                                    <div class="w-16 h-16 bg-brown text-gold rounded-full flex items-center justify-center mb-8 mx-auto shadow-xl">
-                                                        <span class="material-icons-round text-4xl">auto_awesome</span>
+                                                <div className="text-center py-20 lg:py-40">
+                                                    <div className="w-16 h-16 bg-brown text-gold rounded-full flex items-center justify-center mb-8 mx-auto shadow-xl">
+                                                        <span className="material-icons-round text-4xl">auto_awesome</span>
                                                     </div>
-                                                    <h2 class="font-serif text-5xl lg:text-6xl font-black text-brown mb-4 italic tracking-tighter">Interface Ready.</h2>
-                                                    <p class="text-brown/40 font-serif italic text-xl max-w-sm mx-auto leading-relaxed text-balance">Retrieve technical data through Arafat's architecture.</p>
+                                                    <h2 className="font-serif text-5xl lg:text-6xl font-black text-brown mb-4 italic tracking-tighter">Interface Ready.</h2>
+                                                    <p className="text-brown/40 font-serif italic text-xl max-w-sm mx-auto leading-relaxed text-balance">Explore the collective wisdom of human history.</p>
                                                 </div>
                                             `}
                                             ${chat.map((m, i) => html`
-                                                <div key=${i} class="message-row flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}">
-                                                    <div class=${`max-w-[85%] lg:max-w-[75%] px-7 py-4.5 rounded-[1.8rem] shadow-sm text-lg ${m.role === 'user' ? 'bg-gold text-white font-medium' : 'bg-white border border-brown/5 font-serif text-brown leading-normal'}`}>
+                                                <div key=${i} className="message-row flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}">
+                                                    <div className=${`max-w-[85%] lg:max-w-[75%] px-7 py-4.5 rounded-[1.8rem] shadow-sm text-lg ${m.role === 'user' ? 'bg-gold text-white font-medium' : 'bg-white border border-brown/5 font-serif text-brown leading-normal'}`}>
                                                         ${m.content}
                                                     </div>
                                                 </div>
                                             `)}
                                             ${loading && html`
-                                                <div class="flex items-center gap-3 px-4 text-gold">
-                                                    <div class="thinking-anim flex gap-1">
-                                                        <span class="w-1.5 h-1.5 bg-gold rounded-full"></span>
-                                                        <span class="w-1.5 h-1.5 bg-gold rounded-full"></span>
-                                                        <span class="w-1.5 h-1.5 bg-gold rounded-full"></span>
+                                                <div className="flex items-center gap-3 px-4 text-gold">
+                                                    <div className="thinking-anim flex gap-1">
+                                                        <span className="w-1.5 h-1.5 bg-gold rounded-full"></span>
+                                                        <span className="w-1.5 h-1.5 bg-gold rounded-full"></span>
+                                                        <span className="w-1.5 h-1.5 bg-gold rounded-full"></span>
                                                     </div>
-                                                    <span class="text-[0.6rem] font-black uppercase tracking-widest opacity-40">Processing request...</span>
+                                                    <span className="text-[0.6rem] font-black uppercase tracking-widest opacity-40">Processing request...</span>
                                                 </div>
                                             `}
-                                            <div ref=${chatEndRef} class="h-4"></div>
+                                            <div ref=${chatEndRef} className="h-4"></div>
                                         </div>
                                     </div>
 
                                     <!-- Chat Input Panel -->
-                                    <div class="absolute bottom-0 left-0 w-full p-4 lg:p-12 bg-gradient-to-t from-vellum via-vellum to-transparent z-40">
-                                        <div class="max-w-3xl mx-auto flex gap-4 items-center">
-                                            <div class="input-pill rounded-[2rem] p-1.5 flex-1 flex items-center shadow-xl">
+                                    <div className="absolute bottom-0 left-0 w-full p-4 lg:p-12 bg-gradient-to-t from-vellum via-vellum to-transparent z-40">
+                                        <div className="max-w-3xl mx-auto flex gap-4 items-center">
+                                            <div className="input-pill rounded-[2rem] p-1.5 flex-1 flex items-center shadow-xl">
                                                 <input 
-                                                    class="flex-1 px-4 lg:px-6 py-3 lg:py-4 outline-none font-bold text-base lg:text-lg text-brown bg-transparent placeholder-brown/20"
+                                                    className="flex-1 px-4 lg:px-6 py-3 lg:py-4 outline-none font-bold text-base lg:text-lg text-brown bg-transparent placeholder-brown/20"
                                                     placeholder="Input query for the Oracle..."
                                                     value=${query}
                                                     onChange=${e => setQuery(e.target.value)}
@@ -418,27 +498,27 @@
                                                 <button 
                                                     onClick=${callOracle}
                                                     disabled=${loading || !query.trim()}
-                                                    class="w-11 h-11 lg:w-14 lg:h-14 rounded-full bg-brown text-gold flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all disabled:opacity-20"
+                                                    className="w-11 h-11 lg:w-14 lg:h-14 rounded-full bg-brown text-gold flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all disabled:opacity-20"
                                                 >
-                                                    <span class="material-icons-round text-xl lg:text-2xl">${loading ? 'hourglass_top' : 'arrow_upward'}</span>
+                                                    <span className="material-icons-round text-xl lg:text-2xl">${loading ? 'hourglass_top' : 'arrow_upward'}</span>
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             ` : activeTab === 'IWD' ? html`
-                                <div key="IWD" class="flex-1 p-8 lg:p-24 overflow-y-auto pb-24 view-enter">
-                                    <div class="max-w-4xl mx-auto iwd-content">
-                                        <div class="mb-12 lg:mb-16 text-center lg:text-left">
-                                            <h2 class="font-serif text-5xl lg:text-8xl font-black italic text-brown tracking-tighter">IWD <span class="text-gold">Archive</span></h2>
-                                            <p class="text-brown/40 font-serif italic text-xl mt-4">Technical data regarding International Women's Day.</p>
+                                <div key="IWD" className="flex-1 p-8 lg:p-24 overflow-y-auto pb-24 view-enter">
+                                    <div className="max-w-4xl mx-auto iwd-content">
+                                        <div className="mb-12 lg:mb-16 text-center lg:text-left">
+                                            <h2 className="font-serif text-5xl lg:text-8xl font-black italic text-brown tracking-tighter">IWD <span className="text-gold">Archive</span></h2>
+                                            <p className="text-brown/40 font-serif italic text-xl mt-4">Technical data regarding International Women's Day.</p>
                                         </div>
                                         
-                                        <div class="bg-white p-8 lg:p-16 rounded-[3rem] border border-brown/5 shadow-sm vellum-texture">
+                                        <div className="bg-white p-8 lg:p-16 rounded-[3rem] border border-brown/5 shadow-sm vellum-texture">
                                             <h4>Definitions</h4>
                                             <p>International Women's Day (IWD) is a focal point in the women's rights movement. Observed annually on March 8, it is a global holiday for acknowledging socio-political achievements.</p>
                                             
-                                            <div class="iwd-quote">
+                                            <div className="iwd-quote">
                                                 "IWD serves as a standardized global mechanism for tracking progress in gender equality and labor rights."
                                             </div>
 
@@ -448,61 +528,106 @@
                                             <h4>Structural Themes</h4>
                                             <p>Themes are implemented annually by the UN to focus advocacy efforts. Current frameworks prioritize accelerated investment and structural progress.</p>
                                             
-                                            <div class="mt-12 pt-8 border-t border-brown/5 text-center">
-                                                <a href="https://en.wikipedia.org/wiki/International_Women%27s_Day" target="_blank" class="inline-flex items-center gap-2 text-gold font-black uppercase text-[0.6rem] tracking-[0.3em] hover:text-brown transition-colors">
-                                                    <span class="material-icons-round">open_in_new</span>
+                                            <div className="mt-12 pt-8 border-t border-brown/5 text-center">
+                                                <a href="https://en.wikipedia.org/wiki/International_Women%27s_Day" target="_blank" className="inline-flex items-center gap-2 text-gold font-black uppercase text-[0.6rem] tracking-[0.3em] hover:text-brown transition-colors">
+                                                    <span className="material-icons-round">open_in_new</span>
                                                     Open External Documentation
                                                 </a>
+                                            </div>
+
+                                            <h4 className="mt-16">The Journey: A Timeline</h4>
+                                            <div className="relative mt-12 pl-8 border-l-2 border-gold/30 space-y-12">
+                                                ${IWD_TIMELINE.map(item => html`<${TimelineItem} ...${item} />`)}
+                                            </div>
+
+                                            <h4 className="mt-16">Progress in Perspective</h4>
+                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-8">
+                                                ${IWD_STATS.map(stat => html`<${CircularProgress} ...${stat} />`)}
+                                            </div>
+
+                                            <h4 className="mt-16">Global Impact & Recognition</h4>
+                                            <p>IWD is recognized as a public holiday in several countries, including Afghanistan, Armenia, Azerbaijan, Belarus, Burkina Faso, Cambodia, China (for women only), Cuba, Georgia, Guinea-Bissau, Eritrea, Kazakhstan, Kyrgyzstan, Laos, Madagascar (for women only), Moldova, Mongolia, Montenegro, Nepal (for women only), Russia, Tajikistan, Turkmenistan, Uganda, Ukraine, Uzbekistan, Vietnam, and Zambia.</p>
+
+                                            <h4>Key Figures in Women's Rights</h4>
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                                                ${IWD_FIGURES.map(f => html`
+                                                    <div className="p-6 bg-brown/5 rounded-2xl">
+                                                        <h5 className="font-bold text-brown uppercase text-xs tracking-widest mb-2">${f.name}</h5>
+                                                        <p className="text-xs mb-0">${f.bio}</p>
+                                                    </div>
+                                                `)}
+                                            </div>
+
+                                            <h4 className="mt-12">Technological Contributions</h4>
+                                            <p>Women have been foundational to computer science. From Ada Lovelace's first algorithm to Grace Hopper's development of COBOL and the "human computers" at NASA like Katherine Johnson, the technical landscape is built on female innovation.</p>
+                                            
+                                            <div className="mt-8 p-8 bg-gold/5 border border-gold/10 rounded-3xl">
+                                                <h5 className="font-serif italic text-xl text-brown mb-4">Archival Note: The 2030 Agenda</h5>
+                                                <p className="text-sm mb-0">The UN's Sustainable Development Goal 5 aims to achieve gender equality and empower all women and girls by 2030. This includes ending all forms of discrimination and violence against women and girls everywhere.</p>
+                                            </div>
+
+                                            <h4 className="mt-16">Statistical Overview</h4>
+                                            <div className="space-y-6 mt-8">
+                                                ${IWD_PROGRESS_BARS.map(bar => html`
+                                                    <div>
+                                                        <div className="flex justify-between mb-2">
+                                                            <span className="text-[0.6rem] font-black uppercase tracking-widest text-brown/40">${bar.label}</span>
+                                                            <span className="text-[0.6rem] font-black text-gold">${bar.value}</span>
+                                                        </div>
+                                                        <div className="h-1.5 w-full bg-brown/5 rounded-full overflow-hidden">
+                                                            <div className="h-full bg-gold" style=${{ width: bar.value }}></div>
+                                                        </div>
+                                                    </div>
+                                                `)}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             ` : activeTab === 'RECORDS' ? html`
-                                <div key="RECORDS" class="flex-1 p-8 lg:p-24 overflow-y-auto pb-24 view-enter">
-                                    <div class="max-w-4xl mx-auto">
-                                        <div class="mb-12 lg:mb-16">
-                                            <h2 class="font-serif text-5xl lg:text-9xl font-black italic text-brown tracking-tighter">The <br/><span class="text-gold">Archive</span></h2>
-                                            <p class="text-brown/40 font-serif italic text-xl mt-4">Personnel files and technical biographies.</p>
+                                <div key="RECORDS" className="flex-1 p-8 lg:p-24 overflow-y-auto pb-24 view-enter">
+                                    <div className="max-w-4xl mx-auto">
+                                        <div className="mb-12 lg:mb-16">
+                                            <h2 className="font-serif text-5xl lg:text-9xl font-black italic text-brown tracking-tighter">The <br/><span className="text-gold">Archive</span></h2>
+                                            <p className="text-brown/40 font-serif italic text-xl mt-4">Personnel files and technical biographies.</p>
                                         </div>
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                                             ${VAULT_DATA.map((h, i) => html`
-                                                <div key=${i} class="bg-white p-8 lg:p-12 rounded-[2.5rem] border border-brown/5 shadow-sm vellum-texture group relative overflow-hidden transition-all hover:border-gold/20">
-                                                    <div class="flex items-center gap-3 mb-6 lg:mb-8">
-                                                        <div class="h-[1px] w-8 bg-gold/50"></div>
-                                                        <span class="text-[0.55rem] font-black text-gold uppercase tracking-[0.4em]">Index ID #${i+1}</span>
+                                                <div key=${i} className="organic-card p-8 lg:p-12 rounded-[2.5rem] shadow-sm vellum-texture group relative overflow-hidden transition-all">
+                                                    <div className="flex items-center gap-3 mb-6 lg:mb-8">
+                                                        <div className="h-[1px] w-8 bg-gold/50"></div>
+                                                        <span className="text-[0.55rem] font-black text-gold uppercase tracking-[0.4em]">Entry #${i+1}</span>
                                                     </div>
-                                                    <h3 class="font-serif text-3xl lg:text-4xl font-black text-brown mb-4 lg:mb-6 italic group-hover:text-gold transition-colors">${h.name}</h3>
-                                                    <p class="text-brown/60 font-serif text-lg lg:text-xl italic leading-relaxed">${h.bio}</p>
-                                                    ${h.name === 'Arafat' && html`<div class="mt-6 inline-flex items-center gap-2 px-3 py-1 bg-gold/10 text-gold rounded-full text-[0.5rem] font-black uppercase tracking-widest">Architect of Logic</div>`}
+                                                    <h3 className="font-serif text-3xl lg:text-4xl font-black text-brown mb-4 lg:mb-6 italic group-hover:text-gold transition-colors">${h.name}</h3>
+                                                    <p className="text-brown/60 font-serif text-lg lg:text-xl italic leading-relaxed">${h.bio}</p>
                                                 </div>
                                             `)}
                                         </div>
                                     </div>
                                 </div>
                             ` : html`
-                                <div key="CONFIG" class="flex-1 p-8 lg:p-24 overflow-y-auto pb-24 view-enter">
-                                    <div class="max-w-2xl mx-auto">
-                                        <div class="mb-12 text-center">
-                                            <h2 class="font-serif text-5xl lg:text-6xl font-black italic text-brown tracking-tighter">System <br/><span class="text-gold">Calibration</span></h2>
-                                            <p class="text-brown/40 font-serif italic mt-2">Modify connection parameters for logic engines.</p>
+                                <div key="CONFIG" className="flex-1 p-8 lg:p-24 overflow-y-auto pb-24 view-enter">
+                                    <div className="max-w-2xl mx-auto">
+                                        <div className="mb-12 text-center">
+                                            <h2 className="font-serif text-5xl lg:text-6xl font-black italic text-brown tracking-tighter">System <br/><span className="text-gold">Calibration</span></h2>
+                                            <p className="text-brown/40 font-serif italic mt-2">Modify connection parameters for logic engines.</p>
                                         </div>
-                                        <div class="bg-white p-10 lg:p-12 rounded-[2.5rem] border border-brown/5 shadow-sm space-y-10">
-                                            <div class="space-y-4">
-                                                <label class="text-[0.6rem] font-black uppercase text-brown/40 tracking-widest block ml-2">Active Logic Provider</label>
-                                                <div class="flex gap-2 p-1 bg-brown/5 rounded-2xl">
+                                        <div className="bg-white p-10 lg:p-12 rounded-[2.5rem] border border-brown/5 shadow-sm space-y-10">
+                                            <div className="space-y-4">
+                                                <label className="text-[0.6rem] font-black uppercase text-brown/40 tracking-widest block ml-2">Active Logic Provider</label>
+                                                <div className="flex gap-2 p-1 bg-brown/5 rounded-2xl">
                                                     <button 
                                                         onClick=${() => { setProvider('OPENROUTER'); localStorage.setItem('oracle_provider', 'OPENROUTER'); }} 
-                                                        class=${`flex-1 py-3 rounded-xl text-[0.6rem] font-black uppercase tracking-widest transition-all ${provider === 'OPENROUTER' ? 'provider-btn-active' : 'text-brown/40'}`}
+                                                        className=${`flex-1 py-3 rounded-xl text-[0.6rem] font-black uppercase tracking-widest transition-all ${provider === 'OPENROUTER' ? 'provider-btn-active' : 'text-brown/40'}`}
                                                     >OpenRouter</button>
                                                     <button 
                                                         onClick=${() => { setProvider('GROQ'); localStorage.setItem('oracle_provider', 'GROQ'); }} 
-                                                        class=${`flex-1 py-3 rounded-xl text-[0.6rem] font-black uppercase tracking-widest transition-all ${provider === 'GROQ' ? 'provider-btn-active' : 'text-brown/40'}`}
+                                                        className=${`flex-1 py-3 rounded-xl text-[0.6rem] font-black uppercase tracking-widest transition-all ${provider === 'GROQ' ? 'provider-btn-active' : 'text-brown/40'}`}
                                                     >Groq</button>
                                                 </div>
                                             </div>
 
-                                            <div class="space-y-4">
-                                                <label class="text-[0.6rem] font-black uppercase text-brown/40 tracking-widest block ml-2">
+                                            <div className="space-y-4">
+                                                <label className="text-[0.6rem] font-black uppercase text-brown/40 tracking-widest block ml-2">
                                                     ${provider} Authorization Token
                                                 </label>
                                                 <input 
@@ -519,14 +644,14 @@
                                                         }
                                                     }}
                                                     placeholder=${provider === 'GROQ' ? "Enter gsk_..." : "Enter sk-or-..."}
-                                                    class="w-full px-6 py-4 rounded-2xl bg-brown/5 border border-brown/10 outline-none focus:border-gold font-mono text-sm"
+                                                    className="w-full px-6 py-4 rounded-2xl bg-brown/5 border border-brown/10 outline-none focus:border-gold font-mono text-sm"
                                                 />
                                                 ${provider === 'GROQ' && html`
-                                                    <p class="text-[0.55rem] font-bold text-gold uppercase tracking-widest ml-2">Engine: Gemma 2 (9B-IT)</p>
+                                                    <p className="text-[0.55rem] font-bold text-gold uppercase tracking-widest ml-2">Engine: Gemma 2 (9B-IT)</p>
                                                 `}
                                             </div>
 
-                                            <button onClick=${logout} class="w-full py-4 border border-red-800/20 text-red-800/40 rounded-2xl text-[0.65rem] font-bold uppercase tracking-widest hover:bg-red-800 hover:text-white transition-all">Clear Connection Keys</button>
+                                            <button onClick=${logout} className="w-full py-4 border border-red-800/20 text-red-800/40 rounded-2xl text-[0.65rem] font-bold uppercase tracking-widest hover:bg-red-800 hover:text-white transition-all">Clear Connection Keys</button>
                                         </div>
                                     </div>
                                 </div>
@@ -534,9 +659,9 @@
                         </div>
 
                         <!-- Mobile Floating Navigation Hub -->
-                        <nav class="lg:hidden fixed bottom-28 right-6 z-[100] flex flex-col items-center gap-3">
+                        <nav className="lg:hidden fixed bottom-28 right-6 z-[100] flex flex-col items-center gap-3">
                             ${navExpanded && html`
-                                <div class="flex flex-col gap-3 mb-2">
+                                <div className="flex flex-col gap-3 mb-2">
                                     ${[
                                         { id: 'ORACLE', icon: 'auto_awesome' },
                                         { id: 'IWD', icon: 'female' },
@@ -546,19 +671,19 @@
                                         <button 
                                             key=${item.id} 
                                             onClick=${() => { setActiveTab(item.id); setNavExpanded(false); }} 
-                                            class="w-12 h-12 rounded-full bg-white border border-brown/10 text-brown shadow-xl flex items-center justify-center transition-all active:scale-90 nav-expand-enter"
+                                            className="w-12 h-12 rounded-full bg-white border border-brown/10 text-brown shadow-xl flex items-center justify-center transition-all active:scale-90 nav-expand-enter"
                                             style=${{ animationDelay: `${i * 0.05}s` }}
                                         >
-                                            <span class="material-icons-round text-xl">${item.icon}</span>
+                                            <span className="material-icons-round text-xl">${item.icon}</span>
                                         </button>
                                     `)}
                                 </div>
                             `}
                             <button 
                                 onClick=${() => setNavExpanded(!navExpanded)} 
-                                class="w-14 h-14 rounded-full bg-brown text-gold shadow-2xl flex items-center justify-center transition-all active:scale-95"
+                                className="w-14 h-14 rounded-full bg-brown text-gold shadow-2xl flex items-center justify-center transition-all active:scale-95"
                             >
-                                <span class=${`material-icons-round text-2xl transition-transform duration-300 ${navExpanded ? 'rotate-45' : ''}`}>
+                                <span className=${`material-icons-round text-2xl transition-transform duration-300 ${navExpanded ? 'rotate-45' : ''}`}>
                                     ${navExpanded ? 'add' : (
                                         activeTab === 'ORACLE' ? 'auto_awesome' : 
                                         activeTab === 'IWD' ? 'female' : 
