@@ -39,12 +39,11 @@
     </script>
     <style>
         :root { --vh: 1vh; }
+        html, body, #root { height: 100%; }
         body { 
             background-color: #fdfcf4; 
             overflow: hidden;
             color: #4a3728;
-            height: 100vh;
-            height: calc(var(--vh, 1vh) * 100);
             width: 100vw;
         }
 
@@ -83,11 +82,6 @@
         
         .vellum-texture {
             background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png");
-        }
-
-        .hand-drawn-border {
-            border: 2px solid #4a3728;
-            border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
         }
 
         .organic-card {
@@ -181,9 +175,9 @@
             { name: "Marie Curie", bio: "A relentless seeker of truth who discovered radioactivity. Her dedication to science, despite the immense personal cost, remains one of the most inspiring stories of human perseverance." },
             { name: "Grace Hopper", bio: "A pioneer of computer programming who believed that code should be readable by humans. She developed the first compiler and was a driving force behind COBOL." },
             { name: "Katherine Johnson", bio: "A brilliant mathematician whose calculations were critical to the success of the first U.S. crewed spaceflights. Her work at NASA proved that human intelligence is the ultimate engine of discovery." },
-            { name: "[ New Entry ]", bio: "Space reserved for future discovery. What story will be told here?" },
-            { name: "[ New Entry ]", bio: "Space reserved for future discovery. What story will be told here?" },
-            { name: "[ New Entry ]", bio: "Space reserved for future discovery. What story will be told here?" }
+            { name: "Mkoba", bio: "Black Gay Boiiiiii. How does Kakari's cheeks clap?????"
+            { name: "Tea Masala", bio: "Anatupigia Wanetu. " },
+            { name: "Walter White", bio: "Say my name. Say my name. Heisenberg. Bwahahahahahahahaha" }
         ];
 
         const IWD_TIMELINE = [
@@ -233,6 +227,219 @@
                 <span className="text-[0.6rem] font-black text-gold uppercase tracking-widest">${year}</span>
                 <h5 className="font-bold text-brown mt-1">${title}</h5>
                 <p className="text-sm mt-2">${desc}</p>
+            </div>
+        `;
+
+        const OracleTab = ({ chat, loading, query, setQuery, callOracle, chatEndRef }) => html`
+            <div key="ORACLE" className="flex-1 flex flex-col h-full relative view-enter">
+                <div className="flex-1 chat-container p-6 lg:p-12 pb-24 lg:pb-32">
+                    <div className="max-w-3xl mx-auto space-y-8">
+                        ${chat.length === 0 && html`
+                            <div className="text-center py-20 lg:py-40">
+                                <div className="w-16 h-16 bg-brown text-gold rounded-full flex items-center justify-center mb-8 mx-auto shadow-xl">
+                                    <span className="material-icons-round text-4xl">auto_awesome</span>
+                                </div>
+                                <h2 className="font-serif text-5xl lg:text-6xl font-black text-brown mb-4 italic tracking-tighter">Interface Ready.</h2>
+                                <p className="text-brown/40 font-serif italic text-xl max-w-sm mx-auto leading-relaxed text-balance">Explore the collective wisdom of human history.</p>
+                            </div>
+                        `}
+                        ${chat.map((m, i) => html`
+                            <div key=${i} className="message-row flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}">
+                                <div className=${`max-w-[85%] lg:max-w-[75%] px-7 py-4.5 rounded-[1.8rem] shadow-sm text-lg ${m.role === 'user' ? 'bg-gold text-white font-medium' : 'bg-white border border-brown/5 font-serif text-brown leading-normal'}`}>
+                                    ${m.content}
+                                </div>
+                            </div>
+                        `)}
+                        ${loading && html`
+                            <div className="flex items-center gap-3 px-4 text-gold">
+                                <div className="thinking-anim flex gap-1">
+                                    <span className="w-1.5 h-1.5 bg-gold rounded-full"></span>
+                                    <span className="w-1.5 h-1.5 bg-gold rounded-full"></span>
+                                    <span className="w-1.5 h-1.5 bg-gold rounded-full"></span>
+                                </div>
+                                <span className="text-[0.6rem] font-black uppercase tracking-widest opacity-40">Processing request...</span>
+                            </div>
+                        `}
+                        <div ref=${chatEndRef} className="h-4"></div>
+                    </div>
+                </div>
+
+                <div className="absolute bottom-0 left-0 w-full p-4 lg:p-12 bg-gradient-to-t from-vellum via-vellum to-transparent z-40">
+                    <div className="max-w-3xl mx-auto flex gap-4 items-center">
+                        <div className="input-pill rounded-[2rem] p-1.5 flex-1 flex items-center shadow-xl">
+                            <input 
+                                className="flex-1 px-4 lg:px-6 py-3 lg:py-4 outline-none font-bold text-base lg:text-lg text-brown bg-transparent placeholder-brown/20"
+                                placeholder="Input query for the Oracle..."
+                                value=${query}
+                                onChange=${e => setQuery(e.target.value)}
+                                onKeyDown=${e => e.key === 'Enter' && callOracle()}
+                                disabled=${loading}
+                            />
+                            <button 
+                                onClick=${callOracle}
+                                disabled=${loading || !query.trim()}
+                                className="w-11 h-11 lg:w-14 lg:h-14 rounded-full bg-brown text-gold flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all disabled:opacity-20"
+                            >
+                                <span className="material-icons-round text-xl lg:text-2xl">${loading ? 'hourglass_top' : 'arrow_upward'}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const IWDTab = () => html`
+            <div key="IWD" className="flex-1 p-8 lg:p-16 overflow-y-auto pb-24 view-enter">
+                <div className="max-w-4xl mx-auto iwd-content">
+                    <div className="mb-12 lg:mb-16 text-center lg:text-left">
+                        <h2 className="font-serif text-5xl lg:text-8xl font-black italic text-brown tracking-tighter">IWD <span className="text-gold">Archive</span></h2>
+                        <p className="text-brown/40 font-serif italic text-xl mt-4">Technical data regarding International Women's Day.</p>
+                    </div>
+                    
+                    <div className="bg-white p-8 lg:p-16 rounded-[3rem] border border-brown/5 shadow-sm vellum-texture">
+                        <h4>Definitions</h4>
+                        <p>International Women's Day (IWD) is a focal point in the women's rights movement. Observed annually on March 8, it is a global holiday for acknowledging socio-political achievements.</p>
+                        
+                        <div className="iwd-quote">
+                            "IWD serves as a standardized global mechanism for tracking progress in gender equality and labor rights."
+                        </div>
+
+                        <h4>Data Points: Timeline</h4>
+                        <p>Initial occurrence: February 28, 1909, New York City. Transitioned to March 8 following political shifts in 1917. Formal UN adoption confirmed in 1975.</p>
+                        
+                        <h4>Structural Themes</h4>
+                        <p>Themes are implemented annually by the UN to focus advocacy efforts. Current frameworks prioritize accelerated investment and structural progress.</p>
+                        
+                        <div className="mt-12 pt-8 border-t border-brown/5 text-center">
+                            <a href="https://en.wikipedia.org/wiki/International_Women%27s_Day" target="_blank" className="inline-flex items-center gap-2 text-gold font-black uppercase text-[0.6rem] tracking-[0.3em] hover:text-brown transition-colors">
+                                <span className="material-icons-round">open_in_new</span>
+                                Open External Documentation
+                            </a>
+                        </div>
+
+                        <h4 className="mt-16">The Journey: A Timeline</h4>
+                        <div className="relative mt-12 pl-8 border-l-2 border-gold/30 space-y-12">
+                            ${IWD_TIMELINE.map(item => html`<${TimelineItem} ...${item} />`)}
+                        </div>
+
+                        <h4 className="mt-16">Progress in Perspective</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-8">
+                            ${IWD_STATS.map(stat => html`<${CircularProgress} ...${stat} />`)}
+                        </div>
+
+                        <h4 className="mt-16">Global Impact & Recognition</h4>
+                        <p>IWD is recognized as a public holiday in several countries, including Afghanistan, Armenia, Azerbaijan, Belarus, Burkina Faso, Cambodia, China (for women only), Cuba, Georgia, Guinea-Bissau, Eritrea, Kazakhstan, Kyrgyzstan, Laos, Madagascar (for women only), Moldova, Mongolia, Montenegro, Nepal (for women only), Russia, Tajikistan, Turkmenistan, Uganda, Ukraine, Uzbekistan, Vietnam, and Zambia.</p>
+
+                        <h4>Key Figures in Women's Rights</h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                            ${IWD_FIGURES.map(f => html`
+                                <div className="p-6 bg-brown/5 rounded-2xl">
+                                    <h5 className="font-bold text-brown uppercase text-xs tracking-widest mb-2">${f.name}</h5>
+                                    <p className="text-xs mb-0">${f.bio}</p>
+                                </div>
+                            `)}
+                        </div>
+
+                        <h4 className="mt-12">Technological Contributions</h4>
+                        <p>Women have been foundational to computer science. From Ada Lovelace's first algorithm to Grace Hopper's development of COBOL and the "human computers" at NASA like Katherine Johnson, the technical landscape is built on female innovation.</p>
+                        
+                        <div className="mt-8 p-8 bg-gold/5 border border-gold/10 rounded-3xl">
+                            <h5 className="font-serif italic text-xl text-brown mb-4">Archival Note: The 2030 Agenda</h5>
+                            <p className="text-sm mb-0">The UN's Sustainable Development Goal 5 aims to achieve gender equality and empower all women and girls by 2030. This includes ending all forms of discrimination and violence against women and girls everywhere.</p>
+                        </div>
+
+                        <h4 className="mt-16">Statistical Overview</h4>
+                        <div className="space-y-6 mt-8">
+                            ${IWD_PROGRESS_BARS.map(bar => html`
+                                <div>
+                                    <div className="flex justify-between mb-2">
+                                        <span className="text-[0.6rem] font-black uppercase tracking-widest text-brown/40">${bar.label}</span>
+                                        <span className="text-[0.6rem] font-black text-gold">${bar.value}</span>
+                                    </div>
+                                    <div className="h-1.5 w-full bg-brown/5 rounded-full overflow-hidden">
+                                        <div className="h-full bg-gold" style=${{ width: bar.value }}></div>
+                                    </div>
+                                </div>
+                            `)}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const RecordsTab = () => html`
+            <div key="RECORDS" className="flex-1 p-8 lg:p-16 overflow-y-auto pb-24 view-enter">
+                <div className="max-w-4xl mx-auto">
+                    <div className="mb-12 lg:mb-16">
+                        <h2 className="font-serif text-5xl lg:text-9xl font-black italic text-brown tracking-tighter">The <br/><span className="text-gold">Archive</span></h2>
+                        <p className="text-brown/40 font-serif italic text-xl mt-4">Personnel files and technical biographies.</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                        ${VAULT_DATA.map((h, i) => html`
+                            <div key=${i} className="organic-card p-8 lg:p-12 rounded-[2.5rem] shadow-sm vellum-texture group relative overflow-hidden transition-all">
+                                <div className="flex items-center gap-3 mb-6 lg:mb-8">
+                                    <div className="h-[1px] w-8 bg-gold/50"></div>
+                                    <span className="text-[0.55rem] font-black text-gold uppercase tracking-[0.4em]">Entry #${i+1}</span>
+                                </div>
+                                <h3 className="font-serif text-3xl lg:text-4xl font-black text-brown mb-4 lg:mb-6 italic group-hover:text-gold transition-colors">${h.name}</h3>
+                                <p className="text-brown/60 font-serif text-lg lg:text-xl italic leading-relaxed">${h.bio}</p>
+                            </div>
+                        `)}
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const ConfigTab = ({ provider, setProvider, orToken, setOrToken, groqToken, setGroqToken, logout }) => html`
+            <div key="CONFIG" className="flex-1 p-8 lg:p-16 overflow-y-auto pb-24 view-enter">
+                <div className="max-w-2xl mx-auto">
+                    <div className="mb-12 text-center">
+                        <h2 className="font-serif text-5xl lg:text-6xl font-black italic text-brown tracking-tighter">System <br/><span className="text-gold">Calibration</span></h2>
+                        <p className="text-brown/40 font-serif italic mt-2">Modify connection parameters for logic engines.</p>
+                    </div>
+                    <div className="bg-white p-10 lg:p-12 rounded-[2.5rem] border border-brown/5 shadow-sm space-y-10">
+                        <div className="space-y-4">
+                            <label className="text-[0.6rem] font-black uppercase text-brown/40 tracking-widest block ml-2">Active Logic Provider</label>
+                            <div className="flex gap-2 p-1 bg-brown/5 rounded-2xl">
+                                <button 
+                                    onClick=${() => { setProvider('OPENROUTER'); localStorage.setItem('oracle_provider', 'OPENROUTER'); }} 
+                                    className=${`flex-1 py-3 rounded-xl text-[0.6rem] font-black uppercase tracking-widest transition-all ${provider === 'OPENROUTER' ? 'provider-btn-active' : 'text-brown/40'}`}
+                                >OpenRouter</button>
+                                <button 
+                                    onClick=${() => { setProvider('GROQ'); localStorage.setItem('oracle_provider', 'GROQ'); }} 
+                                    className=${`flex-1 py-3 rounded-xl text-[0.6rem] font-black uppercase tracking-widest transition-all ${provider === 'GROQ' ? 'provider-btn-active' : 'text-brown/40'}`}
+                                >Groq</button>
+                            </div>
+                        </div>
+
+                        <div className="space-y-4">
+                            <label className="text-[0.6rem] font-black uppercase text-brown/40 tracking-widest block ml-2">
+                                ${provider} Authorization Token
+                            </label>
+                            <input 
+                                type="password"
+                                value=${provider === 'GROQ' ? groqToken : orToken}
+                                onChange=${e => {
+                                    const val = e.target.value;
+                                    if (provider === 'GROQ') {
+                                        setGroqToken(val);
+                                        localStorage.setItem('groq_token', val);
+                                    } else {
+                                        setOrToken(val); 
+                                        localStorage.setItem('or_token', val);
+                                    }
+                                }}
+                                placeholder=${provider === 'GROQ' ? "Enter gsk_..." : "Enter sk-or-..."}
+                                className="w-full px-6 py-4 rounded-2xl bg-brown/5 border border-brown/10 outline-none focus:border-gold font-mono text-sm"
+                            />
+                            ${provider === 'GROQ' && html`
+                                <p className="text-[0.55rem] font-bold text-gold uppercase tracking-widest ml-2">Engine: Gemma 2 (9B-IT)</p>
+                            `}
+                        </div>
+
+                        <button onClick=${logout} className="w-full py-4 border border-red-800/20 text-red-800/40 rounded-2xl text-[0.65rem] font-bold uppercase tracking-widest hover:bg-red-800 hover:text-white transition-all">Clear Connection Keys</button>
+                    </div>
+                </div>
             </div>
         `;
 
@@ -386,9 +593,9 @@
             };
 
             return html`
-                <div className="flex h-full w-full lg:overflow-hidden overflow-y-auto">
+                <div className="flex h-full w-full overflow-hidden">
                     <!-- Sidebar (Desktop) -->
-                    <aside className="hidden lg:flex w-64 bg-white border-r border-brown/5 flex-col p-8 z-50">
+                    <aside className="hidden lg:flex w-64 bg-white border-r border-brown/5 flex-col p-8 z-50 shrink-0">
                         <div className="flex items-center gap-3 mb-12">
                             <div className="w-10 h-10 bg-brown text-gold rounded-xl flex items-center justify-center font-black italic shadow-sm uppercase">O</div>
                             <div>
@@ -434,9 +641,9 @@
                         </div>
                     </aside>
 
-                    <main className="flex-1 flex flex-col h-full relative bg-vellum vellum-texture">
+                    <main className="flex-1 flex flex-col min-h-0 relative bg-vellum vellum-texture">
                         <!-- Mobile Header -->
-                        <header className="lg:hidden p-4 bg-white border-b border-brown/5 flex items-center justify-between z-50">
+                        <header className="lg:hidden p-4 bg-white border-b border-brown/5 flex items-center justify-between z-50 shrink-0">
                             <div className="flex items-center gap-3">
                                 <div className="w-8 h-8 bg-brown text-gold rounded-lg flex items-center justify-center text-xs font-black italic uppercase">O</div>
                                 <span className="text-[0.6rem] font-black uppercase tracking-widest text-brown tracking-tighter">The Oracle</span>
@@ -448,214 +655,11 @@
                             </div>
                         </header>
 
-                        <div className="flex-1 flex flex-col h-full overflow-hidden">
-                            ${activeTab === 'ORACLE' ? html`
-                                <div key="ORACLE" className="flex-1 flex flex-col h-full relative view-enter">
-                                    <div className="flex-1 chat-container p-6 lg:p-12 pb-24 lg:pb-32">
-                                        <div className="max-w-3xl mx-auto space-y-8">
-                                            ${chat.length === 0 && html`
-                                                <div className="text-center py-20 lg:py-40">
-                                                    <div className="w-16 h-16 bg-brown text-gold rounded-full flex items-center justify-center mb-8 mx-auto shadow-xl">
-                                                        <span className="material-icons-round text-4xl">auto_awesome</span>
-                                                    </div>
-                                                    <h2 className="font-serif text-5xl lg:text-6xl font-black text-brown mb-4 italic tracking-tighter">Interface Ready.</h2>
-                                                    <p className="text-brown/40 font-serif italic text-xl max-w-sm mx-auto leading-relaxed text-balance">Explore the collective wisdom of human history.</p>
-                                                </div>
-                                            `}
-                                            ${chat.map((m, i) => html`
-                                                <div key=${i} className="message-row flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}">
-                                                    <div className=${`max-w-[85%] lg:max-w-[75%] px-7 py-4.5 rounded-[1.8rem] shadow-sm text-lg ${m.role === 'user' ? 'bg-gold text-white font-medium' : 'bg-white border border-brown/5 font-serif text-brown leading-normal'}`}>
-                                                        ${m.content}
-                                                    </div>
-                                                </div>
-                                            `)}
-                                            ${loading && html`
-                                                <div className="flex items-center gap-3 px-4 text-gold">
-                                                    <div className="thinking-anim flex gap-1">
-                                                        <span className="w-1.5 h-1.5 bg-gold rounded-full"></span>
-                                                        <span className="w-1.5 h-1.5 bg-gold rounded-full"></span>
-                                                        <span className="w-1.5 h-1.5 bg-gold rounded-full"></span>
-                                                    </div>
-                                                    <span className="text-[0.6rem] font-black uppercase tracking-widest opacity-40">Processing request...</span>
-                                                </div>
-                                            `}
-                                            <div ref=${chatEndRef} className="h-4"></div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Chat Input Panel -->
-                                    <div className="absolute bottom-0 left-0 w-full p-4 lg:p-12 bg-gradient-to-t from-vellum via-vellum to-transparent z-40">
-                                        <div className="max-w-3xl mx-auto flex gap-4 items-center">
-                                            <div className="input-pill rounded-[2rem] p-1.5 flex-1 flex items-center shadow-xl">
-                                                <input 
-                                                    className="flex-1 px-4 lg:px-6 py-3 lg:py-4 outline-none font-bold text-base lg:text-lg text-brown bg-transparent placeholder-brown/20"
-                                                    placeholder="Input query for the Oracle..."
-                                                    value=${query}
-                                                    onChange=${e => setQuery(e.target.value)}
-                                                    onKeyDown=${e => e.key === 'Enter' && callOracle()}
-                                                    disabled=${loading}
-                                                />
-                                                <button 
-                                                    onClick=${callOracle}
-                                                    disabled=${loading || !query.trim()}
-                                                    className="w-11 h-11 lg:w-14 lg:h-14 rounded-full bg-brown text-gold flex items-center justify-center shadow-lg hover:scale-105 active:scale-95 transition-all disabled:opacity-20"
-                                                >
-                                                    <span className="material-icons-round text-xl lg:text-2xl">${loading ? 'hourglass_top' : 'arrow_upward'}</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ` : activeTab === 'IWD' ? html`
-                                <div key="IWD" className="flex-1 p-8 lg:p-24 overflow-y-auto pb-24 view-enter">
-                                    <div className="max-w-4xl mx-auto iwd-content">
-                                        <div className="mb-12 lg:mb-16 text-center lg:text-left">
-                                            <h2 className="font-serif text-5xl lg:text-8xl font-black italic text-brown tracking-tighter">IWD <span className="text-gold">Archive</span></h2>
-                                            <p className="text-brown/40 font-serif italic text-xl mt-4">Technical data regarding International Women's Day.</p>
-                                        </div>
-                                        
-                                        <div className="bg-white p-8 lg:p-16 rounded-[3rem] border border-brown/5 shadow-sm vellum-texture">
-                                            <h4>Definitions</h4>
-                                            <p>International Women's Day (IWD) is a focal point in the women's rights movement. Observed annually on March 8, it is a global holiday for acknowledging socio-political achievements.</p>
-                                            
-                                            <div className="iwd-quote">
-                                                "IWD serves as a standardized global mechanism for tracking progress in gender equality and labor rights."
-                                            </div>
-
-                                            <h4>Data Points: Timeline</h4>
-                                            <p>Initial occurrence: February 28, 1909, New York City. Transitioned to March 8 following political shifts in 1917. Formal UN adoption confirmed in 1975.</p>
-                                            
-                                            <h4>Structural Themes</h4>
-                                            <p>Themes are implemented annually by the UN to focus advocacy efforts. Current frameworks prioritize accelerated investment and structural progress.</p>
-                                            
-                                            <div className="mt-12 pt-8 border-t border-brown/5 text-center">
-                                                <a href="https://en.wikipedia.org/wiki/International_Women%27s_Day" target="_blank" className="inline-flex items-center gap-2 text-gold font-black uppercase text-[0.6rem] tracking-[0.3em] hover:text-brown transition-colors">
-                                                    <span className="material-icons-round">open_in_new</span>
-                                                    Open External Documentation
-                                                </a>
-                                            </div>
-
-                                            <h4 className="mt-16">The Journey: A Timeline</h4>
-                                            <div className="relative mt-12 pl-8 border-l-2 border-gold/30 space-y-12">
-                                                ${IWD_TIMELINE.map(item => html`<${TimelineItem} ...${item} />`)}
-                                            </div>
-
-                                            <h4 className="mt-16">Progress in Perspective</h4>
-                                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-8">
-                                                ${IWD_STATS.map(stat => html`<${CircularProgress} ...${stat} />`)}
-                                            </div>
-
-                                            <h4 className="mt-16">Global Impact & Recognition</h4>
-                                            <p>IWD is recognized as a public holiday in several countries, including Afghanistan, Armenia, Azerbaijan, Belarus, Burkina Faso, Cambodia, China (for women only), Cuba, Georgia, Guinea-Bissau, Eritrea, Kazakhstan, Kyrgyzstan, Laos, Madagascar (for women only), Moldova, Mongolia, Montenegro, Nepal (for women only), Russia, Tajikistan, Turkmenistan, Uganda, Ukraine, Uzbekistan, Vietnam, and Zambia.</p>
-
-                                            <h4>Key Figures in Women's Rights</h4>
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
-                                                ${IWD_FIGURES.map(f => html`
-                                                    <div className="p-6 bg-brown/5 rounded-2xl">
-                                                        <h5 className="font-bold text-brown uppercase text-xs tracking-widest mb-2">${f.name}</h5>
-                                                        <p className="text-xs mb-0">${f.bio}</p>
-                                                    </div>
-                                                `)}
-                                            </div>
-
-                                            <h4 className="mt-12">Technological Contributions</h4>
-                                            <p>Women have been foundational to computer science. From Ada Lovelace's first algorithm to Grace Hopper's development of COBOL and the "human computers" at NASA like Katherine Johnson, the technical landscape is built on female innovation.</p>
-                                            
-                                            <div className="mt-8 p-8 bg-gold/5 border border-gold/10 rounded-3xl">
-                                                <h5 className="font-serif italic text-xl text-brown mb-4">Archival Note: The 2030 Agenda</h5>
-                                                <p className="text-sm mb-0">The UN's Sustainable Development Goal 5 aims to achieve gender equality and empower all women and girls by 2030. This includes ending all forms of discrimination and violence against women and girls everywhere.</p>
-                                            </div>
-
-                                            <h4 className="mt-16">Statistical Overview</h4>
-                                            <div className="space-y-6 mt-8">
-                                                ${IWD_PROGRESS_BARS.map(bar => html`
-                                                    <div>
-                                                        <div className="flex justify-between mb-2">
-                                                            <span className="text-[0.6rem] font-black uppercase tracking-widest text-brown/40">${bar.label}</span>
-                                                            <span className="text-[0.6rem] font-black text-gold">${bar.value}</span>
-                                                        </div>
-                                                        <div className="h-1.5 w-full bg-brown/5 rounded-full overflow-hidden">
-                                                            <div className="h-full bg-gold" style=${{ width: bar.value }}></div>
-                                                        </div>
-                                                    </div>
-                                                `)}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ` : activeTab === 'RECORDS' ? html`
-                                <div key="RECORDS" className="flex-1 p-8 lg:p-24 overflow-y-auto pb-24 view-enter">
-                                    <div className="max-w-4xl mx-auto">
-                                        <div className="mb-12 lg:mb-16">
-                                            <h2 className="font-serif text-5xl lg:text-9xl font-black italic text-brown tracking-tighter">The <br/><span className="text-gold">Archive</span></h2>
-                                            <p className="text-brown/40 font-serif italic text-xl mt-4">Personnel files and technical biographies.</p>
-                                        </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-                                            ${VAULT_DATA.map((h, i) => html`
-                                                <div key=${i} className="organic-card p-8 lg:p-12 rounded-[2.5rem] shadow-sm vellum-texture group relative overflow-hidden transition-all">
-                                                    <div className="flex items-center gap-3 mb-6 lg:mb-8">
-                                                        <div className="h-[1px] w-8 bg-gold/50"></div>
-                                                        <span className="text-[0.55rem] font-black text-gold uppercase tracking-[0.4em]">Entry #${i+1}</span>
-                                                    </div>
-                                                    <h3 className="font-serif text-3xl lg:text-4xl font-black text-brown mb-4 lg:mb-6 italic group-hover:text-gold transition-colors">${h.name}</h3>
-                                                    <p className="text-brown/60 font-serif text-lg lg:text-xl italic leading-relaxed">${h.bio}</p>
-                                                </div>
-                                            `)}
-                                        </div>
-                                    </div>
-                                </div>
-                            ` : html`
-                                <div key="CONFIG" className="flex-1 p-8 lg:p-24 overflow-y-auto pb-24 view-enter">
-                                    <div className="max-w-2xl mx-auto">
-                                        <div className="mb-12 text-center">
-                                            <h2 className="font-serif text-5xl lg:text-6xl font-black italic text-brown tracking-tighter">System <br/><span className="text-gold">Calibration</span></h2>
-                                            <p className="text-brown/40 font-serif italic mt-2">Modify connection parameters for logic engines.</p>
-                                        </div>
-                                        <div className="bg-white p-10 lg:p-12 rounded-[2.5rem] border border-brown/5 shadow-sm space-y-10">
-                                            <div className="space-y-4">
-                                                <label className="text-[0.6rem] font-black uppercase text-brown/40 tracking-widest block ml-2">Active Logic Provider</label>
-                                                <div className="flex gap-2 p-1 bg-brown/5 rounded-2xl">
-                                                    <button 
-                                                        onClick=${() => { setProvider('OPENROUTER'); localStorage.setItem('oracle_provider', 'OPENROUTER'); }} 
-                                                        className=${`flex-1 py-3 rounded-xl text-[0.6rem] font-black uppercase tracking-widest transition-all ${provider === 'OPENROUTER' ? 'provider-btn-active' : 'text-brown/40'}`}
-                                                    >OpenRouter</button>
-                                                    <button 
-                                                        onClick=${() => { setProvider('GROQ'); localStorage.setItem('oracle_provider', 'GROQ'); }} 
-                                                        className=${`flex-1 py-3 rounded-xl text-[0.6rem] font-black uppercase tracking-widest transition-all ${provider === 'GROQ' ? 'provider-btn-active' : 'text-brown/40'}`}
-                                                    >Groq</button>
-                                                </div>
-                                            </div>
-
-                                            <div className="space-y-4">
-                                                <label className="text-[0.6rem] font-black uppercase text-brown/40 tracking-widest block ml-2">
-                                                    ${provider} Authorization Token
-                                                </label>
-                                                <input 
-                                                    type="password"
-                                                    value=${provider === 'GROQ' ? groqToken : orToken}
-                                                    onChange=${e => {
-                                                        const val = e.target.value;
-                                                        if (provider === 'GROQ') {
-                                                            setGroqToken(val);
-                                                            localStorage.setItem('groq_token', val);
-                                                        } else {
-                                                            setOrToken(val); 
-                                                            localStorage.setItem('or_token', val);
-                                                        }
-                                                    }}
-                                                    placeholder=${provider === 'GROQ' ? "Enter gsk_..." : "Enter sk-or-..."}
-                                                    className="w-full px-6 py-4 rounded-2xl bg-brown/5 border border-brown/10 outline-none focus:border-gold font-mono text-sm"
-                                                />
-                                                ${provider === 'GROQ' && html`
-                                                    <p className="text-[0.55rem] font-bold text-gold uppercase tracking-widest ml-2">Engine: Gemma 2 (9B-IT)</p>
-                                                `}
-                                            </div>
-
-                                            <button onClick=${logout} className="w-full py-4 border border-red-800/20 text-red-800/40 rounded-2xl text-[0.65rem] font-bold uppercase tracking-widest hover:bg-red-800 hover:text-white transition-all">Clear Connection Keys</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            `}
+                        <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+                            ${activeTab === 'ORACLE' ? html`<${OracleTab} chat=${chat} loading=${loading} query=${query} setQuery=${setQuery} callOracle=${callOracle} chatEndRef=${chatEndRef} />` : 
+                              activeTab === 'IWD' ? html`<${IWDTab} />` : 
+                              activeTab === 'RECORDS' ? html`<${RecordsTab} />` : 
+                              html`<${ConfigTab} provider=${provider} setProvider=${setProvider} orToken=${orToken} setOrToken=${setOrToken} groqToken=${groqToken} setGroqToken=${setGroqToken} logout=${logout} />`}
                         </div>
 
                         <!-- Mobile Floating Navigation Hub -->
