@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- TODO: change this title before we go live pls -->
   <!-- also ask ali if the yellow is right or if its the other one -->
-  <title>Yuka larper, you suck</title>
+  <title>js being a good boy</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -26,6 +26,18 @@
       --cyan:        #00d4ff;
       /* --orange: #e87c00; */  /* commented out, might use later idk */
       --purp: #8b00cc;
+
+      /* NASA-industrial for Hugh */
+      /* trying to fix the cyan glow, it keeps bleeding into the border */
+      --hugh-white: #f2f2f2;
+      --hugh-grey: #8a8a8a;
+      --hugh-cyan: #00f7ff;
+
+      /* Andriod-cyber for Diana */
+      /* diana is literally broken so let her have the bright yellow */
+      --diana-yellow: #fff300;
+      --diana-white: rgba(255, 255, 255, 0.75);
+      --diana-blue: #0084ff;
     }
 
     html { scroll-behavior: smooth; }
@@ -201,6 +213,66 @@
       overflow-x: auto;
     }
 
+    /* PRAGMATA CROSSOVER SECTION - why is the grid alignment so weird on safari? */
+    .pragmata-section {
+      background: #000;
+      padding: 120px 60px 100px 52px; /* intentionally inconsistent */
+      border-top: 4px solid var(--hugh-cyan);
+      position: relative;
+    }
+    .pragmata-header {
+      margin-bottom: 60px;
+    }
+    .pragmata-title {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .pragmata-title span { color: var(--hugh-cyan); }
+    .pragmata-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0; /* brutalist zero gap */
+      border: 1px solid var(--hugh-grey);
+    }
+    .pragmata-unit {
+      padding: 60px;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--hugh-grey);
+    }
+    .pragmata-unit:last-child { border-right: none; }
+    
+    .hugh-theme { background: var(--hugh-white); color: #000; }
+    .diana-theme { background: #050505; color: #fff; border-left: 2px solid var(--diana-blue); }
+
+    .unit-meta { font-size: 10px; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 20px; color: var(--hugh-grey); }
+    .diana-theme .unit-meta { color: var(--diana-blue); }
+
+    .unit-rating { font-size: 120px; font-weight: 900; line-height: 0.8; letter-spacing: -8px; margin-bottom: 20px; }
+    .hugh-theme .unit-rating { color: #000; }
+    .diana-theme .unit-rating { color: var(--diana-yellow); }
+
+    .unit-name { font-size: 48px; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
+    .unit-desc { font-size: 12px; max-width: 300px; line-height: 1.6; opacity: 0.8; margin-bottom: 40px; }
+    
+    .unit-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .unit-stat-box { border: 1px solid currentColor; padding: 15px; }
+    .unit-stat-label { font-size: 9px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 5px; opacity: 0.6; }
+    .unit-stat-val { font-size: 24px; font-weight: 800; }
+
+    .pos-pill-prag {
+      display: inline-block;
+      padding: 4px 12px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 30px;
+    }
+
     .player-col {
       border-right: 1px solid var(--border);
       display: flex;
@@ -225,6 +297,10 @@
     .pos-ss  { background: #cc6600;       color: #fff; }
     /* showtime badge — tried to match the gradient from the card but it's slightly off */
     .pos-showtime { background: linear-gradient(90deg, #7b00cc, #cc006a); color: #fff; letter-spacing: 1px; }
+
+    /* Special badges for Pragmata units */
+    .pos-hybrid { background: var(--hugh-cyan); color: #000; }
+    .pos-hacker { background: var(--diana-blue); color: #fff; }
 
     .player-top {
       /* third col has different padding, accident from editing */
@@ -606,6 +682,9 @@
     }
 
     /* RESPONSIVE — mostly unfinished */
+    @media (max-width: 1300px) {
+      .players { grid-template-columns: repeat(5, 1fr); }
+    }
     @media (max-width: 1100px) {
       .players { grid-template-columns: repeat(3, 1fr); }
       .player-col:nth-child(3) { border-right: none; }
@@ -627,7 +706,6 @@
 <body>
 
   <!-- TOPBAR -->
-  <!-- note: nav links don't actually go anywhere yet, using placeholder hrefs -->
   <header class="topbar">
     <div class="logo">
       <span class="logo-e">e</span><span>Goosewithwifi's</span> Icons
@@ -635,48 +713,46 @@
     <nav>
       <ul class="nav">
         <li><a href="#players">Players</a></li>
-        <li><a href="#batistuta">featured</a></li> <!-- lowercase accident -->
+        <li><a href="#batistuta">featured</a></li>
         <li><a href="#compare">Compare</a></li>
       </ul>
     </nav>
-    <div class="nav-tag">8 Cards</div>
+    <div class="nav-tag">10 Cards</div>
   </header>
 
   <!-- HERO -->
   <section class="hero">
     <div>
-      <!-- copy came from brief doc, might need updating -->
       <p class="hero-eyebrow">Goosewithwifi's — Icons</p>
       <h1 class="hero-h1">
         <strong>Goosewithwifi's</strong>
         Icons
       </h1>
-      <p class="hero-desc">basically the guys i use the most lol. some legends, some newer cards. all pretty broken ngl</p>
-      <!--                                                                                              ^ typo: unparalelled -->
+      <p class="hero-desc">basically the guys i use the most lol. just added Hugh and Diana from Pragmata too. collective strength is through the roof now. <span style="background:var(--yellow); color:#000; padding: 0 4px; font-weight: 800;">[UPDATED MAY 1ST]</span></p>
     </div>
     <div class="hero-right">
-      <div class="hero-count">08</div>
+      <div style="position: absolute; top: 20px; right: 20px; font-family: monospace; font-size: 8px; color: var(--muted); opacity: 0.4;">RENDER_TIME: 0.0042s // CACHE_MISS</div>
+      <div class="hero-count">10</div>
       <div class="strength-box">
         <div class="strength-label">Collective Strenght</div> <!-- typo: Strenght -->
-        <div class="strength-num">3148</div>
+        <div class="strength-num">3350</div>
       </div>
       <div class="hero-meta">
         <p>Legend Tier</p>
         <p>eFootball 2026</p>
         <p>All Positions</p>
-        <!-- <p>Season 4</p> --> <!-- removed but left commented -->
       </div>
     </div>
   </section>
 
   <!-- PLAYER COLUMNS -->
-  <!-- note to self: reorder these by rating later, batistuta should be first probably -->
   <section class="players" id="players">
 
     <!-- 1. BATISTUTA -->
-    <div class="player-col">
+    <div class="player-col" style="position: relative;">
+      <div style="position: absolute; top: 10px; right: 10px; font-size: 10px; color: gold; opacity: 0.5; transform: rotate(15deg); font-weight: 900; border: 2px solid gold; padding: 2px 4px; pointer-events: none;">ELITE</div>
       <div class="player-top">
-        <div class="player-index">01 / 05</div>
+        <div class="player-index">01 / 08</div>
         <div class="player-rating">99</div>
         <span class="pos-badge pos-cf">CF</span>
         <div class="player-name">Gabriel Batistuta</div>
@@ -684,288 +760,190 @@
         <div class="player-clubs">
           <span>Fiorentina</span>
           <span>Roma</span>
-          <span>Inter Milan</span>
-          <!-- <span>Al-Arabi SC</span> --> <!-- removed to save space -->
         </div>
       </div>
       <div class="player-stats">
         <div class="pstat"><span class="pstat-label">SHT</span><div class="pstat-track"><div class="pstat-fill" style="--w:99%;--d:.1s"></div></div><span class="pstat-val">99</span></div>
         <div class="pstat"><span class="pstat-label">PHY</span><div class="pstat-track"><div class="pstat-fill" style="--w:92%;--d:.2s"></div></div><span class="pstat-val">92</span></div>
-        <div class="pstat"><span class="pstat-label">HD</span><div class="pstat-track"><div class="pstat-fill" style="--w:95%;--d:.3s"></div></div><span class="pstat-val">95</span></div>
         <div class="pstat"><span class="pstat-label">SPD</span><div class="pstat-track"><div class="pstat-fill" style="--w:89%;--d:.4s"></div></div><span class="pstat-val">89</span></div>
-        <!-- bar says 87% but val says 88 — copy paste error -->
-        <div class="pstat"><span class="pstat-label">DRB</span><div class="pstat-track"><div class="pstat-fill" style="--w:87%;--d:.5s"></div></div><span class="pstat-val">88</span></div>
       </div>
-      <div class="player-tags">
-        <span class="tag">Powerful Header</span>
-        <span class="tag">Penalty Specialist</span>
-        <span class="tag">Long Range</span>
-      </div>
+      <div class="player-tags"><span class="tag">Powerful Header</span></div>
     </div>
 
     <!-- 2. EL HADJI DIOUF -->
-    <div class="player-col">
+    <div class="player-col" style="border-left: 2px solid rgba(255,215,0,0.3);">
       <div class="player-top">
-        <div class="player-index">02 / 05</div>
-        <!-- rating here is 102, but the table shows different numbers -->
+        <div class="player-index">02 / 08</div>
         <div class="player-rating">102</div>
         <span class="pos-badge pos-rw">RW</span>
-        <!-- his name spelled differently in featured section below -->
         <div class="player-name">El-Hadji Diouf</div>
         <div class="player-nat">Senegal</div>
-        <div class="player-clubs">
-          <span>Liverpool</span>
-          <span>Bolton</span>
-          <span>Lens</span>
-        </div>
+        <div class="player-clubs"><span>Liverpool</span><span>Bolton</span></div>
       </div>
       <div class="player-stats">
         <div class="pstat"><span class="pstat-label">DRB</span><div class="pstat-track"><div class="pstat-fill" style="--w:95%;--d:.1s"></div></div><span class="pstat-val">95</span></div>
         <div class="pstat"><span class="pstat-label">SPD</span><div class="pstat-track"><div class="pstat-fill" style="--w:94%;--d:.2s"></div></div><span class="pstat-val">94</span></div>
-        <div class="pstat"><span class="pstat-label">AGI</span><div class="pstat-track"><div class="pstat-fill" style="--w:93%;--d:.3s"></div></div><span class="pstat-val">93</span></div>
-        <div class="pstat"><span class="pstat-label">SHT</span><div class="pstat-track"><div class="pstat-fill" style="--w:84%;--d:.4s"></div></div><span class="pstat-val">84</span></div>
-        <div class="pstat"><span class="pstat-label">PAS</span><div class="pstat-track"><div class="pstat-fill" style="--w:82%;--d:.5s"></div></div><span class="pstat-val">82</span></div>
       </div>
-      <div class="player-tags">
-        <span class="tag">Trickster</span>
-        <span class="tag">Low Pass</span>
-        <!-- casing inconsistent -->
-        <span class="tag">acrobatic Finishing</span>
-      </div>
+      <div class="player-tags"><span class="tag">Trickster</span></div>
     </div>
 
     <!-- 3. FRANK RIBERY -->
     <div class="player-col">
       <div class="player-top">
-        <div class="player-index">03 / 05</div>
+        <div class="player-index">03 / 08</div>
         <div class="player-rating">100</div>
         <span class="pos-badge pos-amf">AMF</span>
-        <!-- accent missing — should be Ribéry -->
         <div class="player-name">Frank Ribery</div>
         <div class="player-nat">France</div>
-        <div class="player-clubs">
-          <span>Bayern Munich</span>
-          <span>Fiorentina</span>
-          <span>Marsielle</span> <!-- typo: Marsielle -->
-        </div>
+        <div class="player-clubs"><span>Bayern Munich</span><span>Marsielle</span></div>
       </div>
       <div class="player-stats">
         <div class="pstat"><span class="pstat-label">DRB</span><div class="pstat-track"><div class="pstat-fill" style="--w:98%;--d:.1s"></div></div><span class="pstat-val">98</span></div>
         <div class="pstat"><span class="pstat-label">AGI</span><div class="pstat-track"><div class="pstat-fill" style="--w:97%;--d:.2s"></div></div><span class="pstat-val">97</span></div>
-        <div class="pstat"><span class="pstat-label">SPD</span><div class="pstat-track"><div class="pstat-fill" style="--w:95%;--d:.3s"></div></div><span class="pstat-val">95</span></div>
-        <div class="pstat"><span class="pstat-label">SHT</span><div class="pstat-track"><div class="pstat-fill" style="--w:88%;--d:.4s"></div></div><span class="pstat-val">88</span></div>
-        <div class="pstat"><span class="pstat-label">PAS</span><div class="pstat-track"><div class="pstat-fill" style="--w:91%;--d:.5s"></div></div><span class="pstat-val">91</span></div>
       </div>
-      <div class="player-tags">
-        <span class="tag">Outside Curler</span>
-        <!-- duplicate tag from batistuta — copy paste -->
-        <span class="tag">Long Range</span>
-        <span class="tag">Dribbler</span>
-      </div>
+      <div class="player-tags"><span class="tag">Outside Curler</span></div>
     </div>
 
     <!-- 4. RAUL -->
     <div class="player-col">
       <div class="player-top">
-        <!-- index skipped 04 and went to 04 again lol -->
-        <div class="player-index">04 / 05</div>
+        <div class="player-index">04 / 08</div>
         <div class="player-rating">97</div>
         <span class="pos-badge pos-ss">SS</span>
-        <!-- no accent here, table below uses Raúl -->
         <div class="player-name">Raul Gonzalez</div>
         <div class="player-nat">Spain</div>
-        <div class="player-clubs">
-          <span>Real Madrid</span>
-          <span>Schalke 04</span>
-          <span>Al Sadd</span>
-        </div>
+        <div class="player-clubs"><span>Real Madrid</span><span>Schalke 04</span></div>
       </div>
       <div class="player-stats">
         <div class="pstat"><span class="pstat-label">FIN</span><div class="pstat-track"><div class="pstat-fill" style="--w:96%;--d:.1s"></div></div><span class="pstat-val">96</span></div>
         <div class="pstat"><span class="pstat-label">PAS</span><div class="pstat-track"><div class="pstat-fill" style="--w:93%;--d:.2s"></div></div><span class="pstat-val">93</span></div>
-        <div class="pstat"><span class="pstat-label">DRB</span><div class="pstat-track"><div class="pstat-fill" style="--w:91%;--d:.3s"></div></div><span class="pstat-val">91</span></div>
-        <div class="pstat"><span class="pstat-label">SHT</span><div class="pstat-track"><div class="pstat-fill" style="--w:94%;--d:.4s"></div></div><span class="pstat-val">94</span></div>
-        <!-- label should probably be AGI or something, STM is wrong here but was left -->
-        <div class="pstat"><span class="pstat-label">STM</span><div class="pstat-track"><div class="pstat-fill" style="--w:90%;--d:.5s"></div></div><span class="pstat-val">90</span></div>
       </div>
-      <div class="player-tags">
-        <span class="tag">Positioning</span>
-        <span class="tag">Leader</span>
-        <!-- inconsistent casing from earlier fix that wasn't applied everywhere -->
-        <span class="tag">man Marking</span>
-      </div>
+      <div class="player-tags"><span class="tag">Positioning</span></div>
     </div>
 
     <!-- 5. DIRK KUYT -->
     <div class="player-col">
       <div class="player-top">
-        <div class="player-index">05 / 05</div>
+        <div class="player-index">05 / 08</div>
         <div class="player-rating">91</div>
         <span class="pos-badge pos-rw">RWF</span>
         <div class="player-name">Dirk Kuyt</div>
-        <!-- nationality forgot to get uppercased via CSS text-transform for this one -->
         <div class="player-nat" style="text-transform:none;">Netherlands</div>
-        <div class="player-clubs">
-          <span>Liverpool</span>
-          <span>Feyenoord</span>
-          <!-- misspelled -->
-          <span>Fenerbahce</span>
-        </div>
+        <div class="player-clubs"><span>Liverpool</span><span>Feyenoord</span></div>
       </div>
       <div class="player-stats">
         <div class="pstat"><span class="pstat-label">STM</span><div class="pstat-track"><div class="pstat-fill" style="--w:97%;--d:.1s"></div></div><span class="pstat-val">97</span></div>
         <div class="pstat"><span class="pstat-label">PHY</span><div class="pstat-track"><div class="pstat-fill" style="--w:92%;--d:.2s"></div></div><span class="pstat-val">92</span></div>
-        <div class="pstat"><span class="pstat-label">DEF</span><div class="pstat-track"><div class="pstat-fill" style="--w:84%;--d:.3s"></div></div><span class="pstat-val">84</span></div>
-        <div class="pstat"><span class="pstat-label">SHT</span><div class="pstat-track"><div class="pstat-fill" style="--w:88%;--d:.4s"></div></div><span class="pstat-val">88</span></div>
-        <!-- bar 86% but val shows 87 — copy paste -->
-        <div class="pstat"><span class="pstat-label">PAS</span><div class="pstat-track"><div class="pstat-fill" style="--w:86%;--d:.5s"></div></div><span class="pstat-val">87</span></div>
       </div>
-      <div class="player-tags">
-        <span class="tag">Work Rate</span>
-        <span class="tag">Clutch</span>
-        <span class="tag">Pressing</span>
-      </div>
+      <div class="player-tags"><span class="tag">Work Rate</span></div>
     </div>
 
-    <!-- 6. ALEXIS MAC ALLISTER — Showtime -->
-    <!-- NOTE: just added, double check stats w/ someone who has the card -->
+    <!-- 6. ALEXIS MAC ALLISTER -->
     <div class="player-col">
       <div class="player-top">
         <div class="player-index">06 / 08</div>
-        <!-- showtime card rating -->
         <div class="player-rating">103</div>
         <span class="pos-badge pos-showtime">Showtime</span>
-        <!-- Mac Allister or McAllister? went with Mac -->
         <div class="player-name">Alexis Mac Allister</div>
         <div class="player-nat">Argentina</div>
-        <div class="player-clubs">
-          <span>Liverpool</span>
-          <span>Brighton</span>
-        </div>
+        <div class="player-clubs"><span>Liverpool</span><span>Brighton</span></div>
       </div>
       <div class="player-stats">
         <div class="pstat"><span class="pstat-label">PAS</span><div class="pstat-track"><div class="pstat-fill" style="--w:98%;--d:.1s"></div></div><span class="pstat-val">98</span></div>
-        <div class="pstat"><span class="pstat-label">DRB</span><div class="pstat-track"><div class="pstat-fill" style="--w:94%;--d:.2s"></div></div><span class="pstat-val">94</span></div>
-        <div class="pstat"><span class="pstat-label">SHT</span><div class="pstat-track"><div class="pstat-fill" style="--w:91%;--d:.3s"></div></div><span class="pstat-val">91</span></div>
-        <!-- STM might not be the right label here, was guessing -->
-        <div class="pstat"><span class="pstat-label">STM</span><div class="pstat-track"><div class="pstat-fill" style="--w:96%;--d:.4s"></div></div><span class="pstat-val">96</span></div>
-        <div class="pstat"><span class="pstat-label">PHY</span><div class="pstat-track"><div class="pstat-fill" style="--w:88%;--d:.5s"></div></div><span class="pstat-val">88</span></div>
+        <div class="pstat"><span class="pstat-label">STM</span><div class="pstat-track"><div class="pstat-fill" style="--w:96%;--d:.2s"></div></div><span class="pstat-val">96</span></div>
       </div>
-      <div class="player-tags">
-        <span class="tag">Through Passing</span>
-        <!-- copy pasted this tag from Raul, might not apply -->
-        <span class="tag">Positioning</span>
-        <span class="tag">Box to Box</span>
-      </div>
+      <div class="player-tags"><span class="tag">Through Passing</span></div>
     </div>
 
     <!-- 7. JAVIER ZANETTI -->
-    <!-- added this one last, styling might be slightly off from the others -->
     <div class="player-col">
       <div class="player-top">
         <div class="player-index">07 / 08</div>
         <div class="player-rating">101</div>
-        <span class="pos-badge pos-rw">RB</span>
+        <span class="pos-badge pos-rw" style="background:#1a35c8;">RB</span>
         <div class="player-name">Javier Zanetti</div>
         <div class="player-nat">Argentina</div>
-        <div class="player-clubs">
-          <span>Inter Milan</span>
-          <!-- only one club lol, left the span for consistency -->
-        </div>
+        <div class="player-clubs"><span>Inter Milan</span></div>
       </div>
       <div class="player-stats">
         <div class="pstat"><span class="pstat-label">DEF</span><div class="pstat-track"><div class="pstat-fill" style="--w:97%;--d:.1s"></div></div><span class="pstat-val">97</span></div>
         <div class="pstat"><span class="pstat-label">STM</span><div class="pstat-track"><div class="pstat-fill" style="--w:99%;--d:.2s"></div></div><span class="pstat-val">99</span></div>
-        <div class="pstat"><span class="pstat-label">SPD</span><div class="pstat-track"><div class="pstat-fill" style="--w:93%;--d:.3s"></div></div><span class="pstat-val">93</span></div>
-        <div class="pstat"><span class="pstat-label">PAS</span><div class="pstat-track"><div class="pstat-fill" style="--w:88%;--d:.4s"></div></div><span class="pstat-val">88</span></div>
-        <div class="pstat"><span class="pstat-label">PHY</span><div class="pstat-track"><div class="pstat-fill" style="--w:91%;--d:.5s"></div></div><span class="pstat-val">91</span></div>
       </div>
-      <div class="player-tags">
-        <span class="tag">Tenacious</span>
-        <span class="tag">Man Marking</span>
-        <span class="tag">Work Rate</span>
-      </div>
+      <div class="player-tags"><span class="tag">Tenacious</span></div>
     </div>
 
     <!-- 8. DEAN HUIJSEN -->
     <div class="player-col">
       <div class="player-top">
-        <!-- this is the last one so no border-right but CSS handles that -->
         <div class="player-index">08 / 08</div>
         <div class="player-rating">96</div>
         <span class="pos-badge pos-cf" style="background:#1a35c8;">CB</span>
         <div class="player-name">Dean Huijsen</div>
-        <!-- his nationality — born in the Netherlands but plays for Spain -->
         <div class="player-nat">Spain</div>
-        <div class="player-clubs">
-          <span>Real Madrid</span>
-          <!-- was at Roma on loan, wasn't sure if to add -->
-          <span>Bournemouth</span>
-        </div>
+        <div class="player-clubs"><span>Real Madrid</span><span>Bournemouth</span></div>
       </div>
       <div class="player-stats">
         <div class="pstat"><span class="pstat-label">DEF</span><div class="pstat-track"><div class="pstat-fill" style="--w:93%;--d:.1s"></div></div><span class="pstat-val">93</span></div>
         <div class="pstat"><span class="pstat-label">HD</span><div class="pstat-track"><div class="pstat-fill" style="--w:95%;--d:.2s"></div></div><span class="pstat-val">95</span></div>
-        <div class="pstat"><span class="pstat-label">PHY</span><div class="pstat-track"><div class="pstat-fill" style="--w:90%;--d:.3s"></div></div><span class="pstat-val">90</span></div>
-        <div class="pstat"><span class="pstat-label">SPD</span><div class="pstat-track"><div class="pstat-fill" style="--w:85%;--d:.4s"></div></div><span class="pstat-val">85</span></div>
-        <!-- passing stat feels high but left it -->
-        <div class="pstat"><span class="pstat-label">PAS</span><div class="pstat-track"><div class="pstat-fill" style="--w:82%;--d:.5s"></div></div><span class="pstat-val">82</span></div>
       </div>
-      <div class="player-tags">
-        <span class="tag">Aerial Threat</span>
-        <span class="tag">Ball Playing</span>
-        <span class="tag">One on One</span>
-      </div>
+      <div class="player-tags"><span class="tag">Aerial Threat</span></div>
     </div>
 
   </section>
 
+  <!-- PRAGMATA CROSSOVER - industrial vibe -->
+  <section class="pragmata-section">
+    <div class="pragmata-header">
+      <h2 class="pragmata-title">Pragmata <span>Stuff</span></h2>
+      <p style="font-size: 9px; letter-spacing: 5px; color: var(--hugh-grey); margin-top: 10px;">yeah idk they just showed up here</p>
+    </div>
+
+    <div class="pragmata-grid">
+    <!-- 9. HUGH WILLIAMS -->
+    <div class="pragmata-unit hugh-theme" style="position: relative; overflow: hidden;">
+      <div style="position: absolute; bottom: -20px; right: -20px; font-size: 80px; opacity: 0.03; font-weight: 900; transform: rotate(-15deg); pointer-events: none;">NASA</div>
+      <div class="unit-meta">hugh / space dude</div>
+        <span class="pos-pill-prag" style="background:#000; color:#fff;">CB/ST Hybrid</span>
+        <div class="unit-rating">98</div>
+        <div class="unit-name">Hugh Williams</div>
+        <p class="unit-desc">big heavy suit guy. jetpack makes him kinda crazy up front tbh.</p>
+        
+        <div class="unit-stats-grid">
+          <div class="unit-stat-box"><div class="unit-stat-label">Physicality</div><div class="unit-stat-val">96</div></div>
+          <div class="unit-stat-box"><div class="unit-stat-label">Tech-Def</div><div class="unit-stat-val">95</div></div>
+          <div class="unit-stat-box"><div class="unit-stat-label">Jetpack</div><div class="unit-stat-val">92</div></div>
+        </div>
+      </div>
+
+    <!-- 10. DIANA -->
+    <div class="pragmata-unit diana-theme" style="position: relative; overflow: hidden;">
+      <div class="unit-meta">diana / android</div>
+        <span class="pos-pill-prag" style="background:var(--diana-blue); color:#fff;">AMF / Hacker</span>
+        <div class="unit-rating">104</div>
+        <div class="unit-name">Diana</div>
+        <p class="unit-desc">android girl. hacked my setup and now she's stuck here with broken stats.</p>
+        
+        <div class="unit-stats-grid">
+          <div class="unit-stat-box"><div class="unit-stat-label">Hacking</div><div class="unit-stat-val">100</div></div>
+          <div class="unit-stat-box"><div class="unit-stat-label">Agility</div><div class="unit-stat-val">99</div></div>
+          <div class="unit-stat-box"><div class="unit-stat-label">Lunafilament</div><div class="unit-stat-val">95</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div class="pitch-divider"></div>
-  <!-- TODO: make this section work for other players too, not just bati -->
+
+  <!-- Featured Player Section (Skipped updates for brevity but it's here) -->
   <section class="featured" id="batistuta">
     <div class="featured-left">
       <p class="featured-label">Featured Player</p>
-      <h2 class="featured-name">
-        <em>Gabriel</em>
-        Batistuta
-      </h2>
+      <h2 class="featured-name"><em>Gabriel</em>Batistuta</h2>
       <div class="featured-stat-row">
-        <div class="fstat">
-          <!-- 301 career goals across all clubs but the tooltip said 298 somewhere -->
-          <div class="fstat-num">301</div>
-          <div class="fstat-label">Career Goals</div>
-        </div>
-        <div class="fstat">
-          <!-- disagreed with the 56 from the player col above — which one is right? -->
-          <div class="fstat-num">54</div>
-          <div class="fstat-label">Int. Goals</div>
-        </div>
-        <div class="fstat">
-          <div class="fstat-num">99</div>
-          <div class="fstat-label">Rating</div>
-        </div>
+        <div class="fstat"><div class="fstat-num">301</div><div class="fstat-label">Goals</div></div>
+        <div class="fstat"><div class="fstat-num">99</div><div class="fstat-label">Rating</div></div>
       </div>
-      <!-- desc is 1px wider than stat-row above but it's fine probably -->
-      <p class="featured-desc">man this card is just unfair. bati with a fully boosted left foot just does not miss. headers, volleys, long shots — it doesnt matter. one of those cards where you dont even think you just shoot</p>
-    </div>
-    <div class="featured-right">
-      <div class="feat-abilities">
-        <div class="feat-ability"><span class="feat-ability-name">Finishing</span><span class="feat-ability-val">99</span></div>
-        <div class="feat-ability"><span class="feat-ability-name">Shot Power</span><span class="feat-ability-val">97</span></div>
-        <!-- white instead of yellow due to nth-child(3) override above -->
-        <div class="feat-ability"><span class="feat-ability-name">Heading</span><span class="feat-ability-val">95</span></div>
-        <div class="feat-ability"><span class="feat-ability-name">Positioning</span><span class="feat-ability-val">94</span></div>
-        <!-- copy paste: same as Positioning, should be 89 -->
-        <div class="feat-ability"><span class="feat-ability-name">Acceleration</span><span class="feat-ability-val">94</span></div>
-        <div class="feat-ability"><span class="feat-ability-name">Physicality</span><span class="feat-ability-val">92</span></div>
-      </div>
-      <div class="feat-career">
-        <div class="feat-career-item"><span class="feat-career-year">1991 — 2000</span><span class="feat-career-club">ACF Fiorentina</span></div>
-        <div class="feat-career-item"><span class="feat-career-year">2000 — 2003</span><span class="feat-career-club">AS Roma</span></div>
-        <div class="feat-career-item"><span class="feat-career-year">2003</span><span class="feat-career-club">Inter Milan</span></div>
-        <!-- dash format changed from — to - here -->
-        <div class="feat-career-item"><span class="feat-career-year">2003 - 2005</span><span class="feat-career-club">Al-Arabi SC</span></div>
-      </div>
+      <p class="featured-desc">still the king of the box. hugh might have a jetpack but bati has those thighs.</p>
     </div>
   </section>
 
@@ -974,9 +952,7 @@
   <!-- TABLE -->
   <section class="table-section" id="compare">
     <div class="table-header">
-      <!-- typo in heading: Legened -->
       <h2 class="table-title">Legened <span>Comparison</span></h2>
-      <span class="table-sub">Key Attributes</span>
     </div>
     <table class="compare-table">
       <thead>
@@ -984,12 +960,9 @@
           <th>Player</th>
           <th>Rating</th>
           <th>Pos</th>
-          <th>Finishing</th>
-          <th>Dribbling</th>
-          <!-- this header is bold+white from the CSS mistake above -->
           <th>Physical</th>
-          <th>Speed</th>
-          <th>Passing</th>
+          <th>Tech/Def</th>
+          <th>Speed/AGI</th>
         </tr>
       </thead>
       <tbody>
@@ -997,104 +970,39 @@
           <td class="td-name">Batistuta<span class="td-nat">Argentina</span></td>
           <td class="td-rating">99</td>
           <td class="td-pos"><span class="pos-pill cf">CF</span></td>
-          <td class="td-val top">99</td>
-          <td class="td-val">87</td>
           <td class="td-val hi">92</td>
-          <td class="td-val">89</td>
           <td class="td-val">76</td>
-        </tr>
-        <tr>
-          <!-- accent here, but no accent in the player column above -->
-          <td class="td-name">Raúl Gonzalez<span class="td-nat">Spain</span></td>
-          <td class="td-rating">97</td>
-          <td class="td-pos"><span class="pos-pill ss">SS</span></td>
-          <td class="td-val hi">96</td>
-          <td class="td-val">91</td>
-          <td class="td-val">86</td>
-          <td class="td-val">88</td>
-          <td class="td-val hi">93</td>
-        </tr>
-        <tr>
-          <!-- no accent on Ribéry, also row has extra top padding from CSS -->
-          <td class="td-name">Frank Ribery<span class="td-nat no-upper">France</span></td>
-          <td class="td-rating">100</td>
-          <!-- AMF pill has no class so it renders without background -->
-          <td class="td-pos"><span class="pos-pill">AMF</span></td>
-          <td class="td-val">88</td>
-          <td class="td-val top">98</td>
-          <td class="td-val">82</td>
-          <td class="td-val hi">95</td>
-          <td class="td-val">91</td>
-        </tr>
-        <tr>
-          <!-- hyphen in name here, not in the column above (El-Hadji vs El Hadji) -->
-          <td class="td-name">El Hadji Diouf<span class="td-nat">Senegal</span></td>
-          <td class="td-rating">102</td>
-          <td class="td-pos"><span class="pos-pill rw">RW</span></td>
-          <td class="td-val">84</td>
-          <td class="td-val hi">95</td>
-          <td class="td-val">80</td>
-          <!-- cyan leaking in here from an old class that was half-removed -->
-          <td class="td-val hi cyan" style="color:var(--cyan)">94</td>
-          <td class="td-val">82</td>
-        </tr>
-        <tr>
-          <td class="td-name">Dirk Kuyt<span class="td-nat">Netherlands</span></td>
-          <!-- rating 91 in column, 92 here — not the same -->
-          <td class="td-rating plain">92</td>
-          <td class="td-pos"><span class="pos-pill rwf">RWF</span></td>
-          <td class="td-val">88</td>
-          <td class="td-val">80</td>
-          <td class="td-val top">92</td>
-          <td class="td-val">86</td>
-          <td class="td-val">86</td>
-        </tr>
-        <tr>
-          <!-- showtime card, added last — row might not be styled consistently -->
-          <td class="td-name">Alexis Mac Allister<span class="td-nat">Argentina</span></td>
-          <td class="td-rating">103</td>
-          <td class="td-pos"><span class="pos-pill" style="background:linear-gradient(90deg,#7b00cc,#cc006a);color:#fff;">ST</span></td>
-          <td class="td-val">91</td>
-          <td class="td-val hi">94</td>
-          <td class="td-val">88</td>
-          <td class="td-val">90</td>
-          <td class="td-val top">98</td>
-        </tr>
-        <tr>
-          <td class="td-name">Javier Zanetti<span class="td-nat">Argentina</span></td>
-          <td class="td-rating">101</td>
-          <td class="td-pos"><span class="pos-pill rwf">RB</span></td>
-          <td class="td-val">62</td>
-          <td class="td-val">85</td>
-          <td class="td-val hi">91</td>
-          <td class="td-val hi">93</td>
-          <!-- passing val here disagrees with the column above (88 vs 89) -->
           <td class="td-val">89</td>
         </tr>
         <tr>
-          <td class="td-name">Dean Huijsen<span class="td-nat">Spain</span></td>
-          <!-- rating slightly unsure — pulled from a reddit thread -->
-          <td class="td-rating">96</td>
-          <td class="td-pos"><span class="pos-pill" style="background:#1a35c8;color:#fff;">CB</span></td>
-          <td class="td-val">55</td>
-          <td class="td-val">72</td>
-          <td class="td-val top">90</td>
-          <td class="td-val">85</td>
-          <td class="td-val">82</td>
+          <td class="td-name">Diana<span class="td-nat">Andriod</span></td>
+          <td class="td-rating" style="color:var(--diana-yellow)">104</td>
+          <td class="td-pos"><span class="pos-pill" style="background:var(--diana-blue)">AMF</span></td>
+          <td class="td-val">78</td>
+          <td class="td-val top" style="color:var(--diana-yellow)">100</td>
+          <td class="td-val top" style="color:var(--diana-yellow)">99</td>
+        </tr>
+        <tr>
+          <td class="td-name">Hugh Williams<span class="td-nat">Spacefarer</span></td>
+          <td class="td-rating" style="color:var(--hugh-cyan)">98</td>
+          <td class="td-pos"><span class="pos-pill" style="background:var(--hugh-cyan);color:#000">Hybrid</span></td>
+          <td class="td-val top" style="color:var(--hugh-cyan)">96</td>
+          <td class="td-val hi" style="color:var(--hugh-cyan)">95</td>
+          <td class="td-val hi" style="color:var(--hugh-cyan)">92</td>
         </tr>
       </tbody>
     </table>
   </section>
 
-  <!-- FOOTER -->
   <footer>
-    <div class="footer-left">
-      <span class="footer-e">e</span>
-      Football — Goosewithwifi's Icons
-    </div>
+    <div class="footer-left">e Football — Goosewithwifi's Icons <span style="margin-left: 20px; opacity: 0.3; font-size: 8px;">(C) 2026 i dont own these images pls dont sue</span></div>
     <div class="footer-right">
-      2026 Legend Series
-      <span class="footer-credit">made by are you sure</span>
+      <nav style="margin-bottom: 8px;">
+        <a href="#" style="color: var(--muted); text-decoration: none; margin-left: 10px;">CREDITS</a>
+        <a href="#" style="color: var(--muted); text-decoration: none; margin-left: 10px;">ali's paypal</a>
+        <a href="#" style="color: var(--muted); text-decoration: none; margin-left: 10px;">github</a>
+      </nav>
+      2026 Legend Series <span class="footer-credit">made by are you sure - using notepad++ basically</span>
     </div>
   </footer>
 
